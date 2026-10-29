@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build Your First AI Project - Growth Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Campaign navigation">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">AI</span>
+        <div>
+          <strong>Campaign Studio</strong>
+          <span>Growth Challenge Round 1</span>
+        </div>
+      </div>
+
+      <nav class="sidebar__nav" aria-label="Primary">
+        <button class="nav-item is-active" type="button" data-view="overview">Overview</button>
+        <button class="nav-item" type="button" data-view="registrations">Registrations</button>
+        <button class="nav-item" type="button" data-view="referrals">Referrals</button>
+        <button class="nav-item" type="button" data-view="insights">Campaign Insights</button>
+        <button class="nav-item" type="button" data-view="settings">Settings</button>
+      </nav>
+
+      <div class="sidebar__note">
+        <strong>Sample data is illustrative.</strong>
+        <span>Registration figures are campaign targets, not real results.</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">NxtWave Growth Challenge</p>
+          <h1 id="viewTitle">Overview</h1>
+          <p class="topbar__subtitle">Build Your First AI Project in 60 Minutes · 500 target registrations</p>
+        </div>
+        <div class="topbar__actions">
+          <button class="btn btn--primary" id="exportCsv" type="button">Export CSV</button>
+        </div>
+      </header>
+
+      <section class="view is-active" data-view="overview" id="view-overview">
+        <div class="kpi-grid">
+          <article class="kpi-card">
+            <span class="kpi-card__label">Registrations</span>
+            <strong class="kpi-card__value" id="kpiTotal">0</strong>
+            <span class="kpi-card__meta">of 500 target</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Remaining</span>
+            <strong class="kpi-card__value" id="need">500</strong>
+            <span class="kpi-card__meta">to reach target</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Ambassadors</span>
+            <strong class="kpi-card__value" id="overviewAmbassadors">0</strong>
+            <span class="kpi-card__meta">unique referrers</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Daily target</span>
+            <strong class="kpi-card__value" id="overviewDaily">0</strong>
+            <span class="kpi-card__meta">over 7 days</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Cost per registration</span>
+            <strong class="kpi-card__value" id="overviewCost">0</strong>
+            <span class="kpi-card__meta">from ₹2,000 budget</span>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-card__label">Active channels</span>
+            <strong class="kpi-card__value" id="kpiChannels">0</strong>
+            <span class="kpi-card__meta">with registrations</span>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel panel--progress" id="progress">
+            <div class="panel__head">
+              <div>
+                <h2>Campaign progress</h2>
+                <p>Live progress toward the 500-registration goal.</p>
+              </div>
+            </div>
+            <div class="progress-ring-layout">
+              <svg class="progress-ring" viewBox="0 0 160 160" role="img" aria-labelledby="progressRingTitle">
+                <title id="progressRingTitle">Campaign progress percentage</title>
+                <circle class="progress-ring__track" cx="80" cy="80" r="62"></circle>
+                <circle class="progress-ring__value" id="circularProgress" cx="80" cy="80" r="62"></circle>
+              </svg>
+              <div class="progress-ring__center">
+              <strong id="regCount">0</strong>
+                <span>registered</span>
+              </div>
+            </div>
+            <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="500" aria-valuenow="0"></div>
+            <p class="progress-note"><span id="regPctText">0%</span> of target · <span id="needText">500</span> remaining</p>
+          </article>
+
+          <article class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>7-day registration trend</h2>
+                <p>Registrations recorded in the last seven days.</p>
+              </div>
+            </div>
+            <div class="trend-chart" id="trendChart" aria-label="Seven-day registration trend"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>Channel comparison</h2>
+                <p>Registrations by acquisition channel.</p>
+              </div>
+            </div>
+            <div class="channel-bars" id="channelComparison"></div>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel__head">
+            <div>
+              <h2>Recent registrations</h2>
+              <p>Latest registration activity.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="recentRegistrationsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Branch</th>
+                  <th>Year</th>
+                  <th>Channel</th>
+                  <th>Referred by</th>
+                  <th>Registered at</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" data-view="registrations" id="view-registrations" hidden>
+        <div class="view-grid">
+          <article class="panel" id="register">
+            <div class="panel__head">
+              <div>
+                <h2>Register for the workshop</h2>
+                <p>Tell us a little about yourself. Registrations are tracked only for this challenge simulation.</p>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="input-wrap">
+                <label for="rName">Full name</label>
+                <input id="rName" type="text" required>
+              </div>
+              <div class="input-wrap">
+                <label for="rBranch">Branch</label>
+                <input id="rBranch" type="text" placeholder="e.g. Computer Science">
+              </div>
+              <div class="input-wrap">
+                <label for="rYear">Academic year</label>
+                <select id="rYear">
+                  <option value="">Not specified</option>
+                  <option value="1">Year 1</option>
+                  <option value="2">Year 2</option>
+                  <option value="3">Year 3</option>
+                  <option value="4">Year 4</option>
+                </select>
+              </div>
+              <div class="input-wrap">
+                <label for="rCode">Referral code (optional)</label>
+                <input id="rCode" type="text" placeholder="Track who referred you">
+              </div>
+              <div class="input-wrap">
+                <label for="rPhone">Phone (WhatsApp, optional)</label>
+                <input id="rPhone" type="tel" placeholder="+91 98765 43210">
+              </div>
+              <div class="input-wrap input-wrap--checkbox">
+                <label for="rTerms">
+                  <input id="rTerms" type="checkbox" required>
+                  I agree to receive a workshop reminder on WhatsApp / email
+                </label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn--primary" id="submitReg" type="button">Submit registration</button>
+              <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>Registration guidance</h2>
+                <p>Use a valid referral code to credit the correct ambassador.</p>
+              </div>
+            </div>
+            <ul class="guidance-list">
+              <li>Full name and consent are required.</li>
+              <li>Branch, year, and phone are optional.</li>
+              <li>Invalid referral codes do not credit an ambassador.</li>
+              <li>All data is stored in this browser only.</li>
+            </ul>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel__head">
+            <div>
+              <h2>All registrations</h2>
+              <p>Registrations submitted in this browser.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="registrationsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Branch</th>
+                  <th>Year</th>
+                  <th>Channel</th>
+                  <th>Referred by</th>
+                  <th>Registered at</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" data-view="referrals" id="view-referrals" hidden>
+        <article class="panel">
+          <div class="panel__head">
+            <div>
+              <h2>Ambassador tracker</h2>
+              <p>Each ambassador receives a unique referral code.</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="input-wrap">
+              <label for="ambName">Ambassador name</label>
+              <input id="ambName" type="text" placeholder="e.g. Priya Rao">
+            </div>
+            <div class="input-wrap">
+              <label for="ambChannel">Channel</label>
+              <select id="ambChannel">
+                <option value="campus">College clubs &amp; campus</option>
+                <option value="community">Student communities</option>
+                <option value="referral">Peer referral</option>
+              </select>
+            </div>
+            <div class="input-wrap">
+              <label for="ambCode">Generated code</label>
+              <input id="ambCode" type="text" placeholder="Auto-generated" readonly>
+            </div>
+            <div class="input-wrap input-wrap--action">
+              <label>&nbsp;</label>
+              <button class="btn btn--primary" id="addAmbassador" type="button">Add / Refresh code</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel__head">
+            <div>
+              <h2>Search and filter ambassadors</h2>
+              <p>Find ambassadors, filter by channel, and sort results.</p>
+            </div>
+          </div>
+          <div class="filter-grid">
+            <div class="input-wrap">
+              <label for="search">Search ambassador</label>
+              <input id="search" type="text" placeholder="Search...">
+            </div>
+            <div class="input-wrap">
+              <label for="filterChannel">Filter by channel</label>
+              <select id="filterChannel">
+                <option value="">All channels</option>
+                <option value="campus">Campus</option>
+                <option value="community">Communities</option>
+                <option value="referral">Referral</option>
+              </select>
+            </div>
+            <div class="input-wrap">
+              <label for="minAmt">Minimum registrations</label>
+              <input id="minAmt" type="number" min="0" placeholder="0">
+            </div>
+            <div class="input-wrap">
+              <label for="sortBy">Sort by</label>
+              <select id="sortBy">
+                <option value="name">Name</option>
+                <option value="reg">Registrations</option>
+                <option value="channel">Channel</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="ambassadorTable">
+              <thead>
+                <tr>
+                  <th>Ambassador</th>
+                  <th>Channel</th>
+                  <th>Referral code</th>
+                  <th>Registrations</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" data-view="insights" id="view-insights" hidden>
+        <div class="view-grid">
+          <article class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>Channel analytics</h2>
+                <p>Targets and registrations by channel.</p>
+              </div>
+            </div>
+            <div class="chip-grid" id="channelChips"></div>
+            <div class="table-wrap">
+              <table id="channelTable">
+                <thead>
+                  <tr>
+                    <th>Channel</th>
+                    <th>Ambassador count</th>
+                    <th>Registrations</th>
+                    <th>% of total</th>
+                    <th>Target split</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>Quick dashboard</h2>
+                <p>Core campaign metrics.</p>
+              </div>
+            </div>
+            <div class="quick-stats">
+              <div class="quick-stat"><span class="quick-stat__value" id="dashTotal">0</span><span class="quick-stat__label">Total registrations</span></div>
+              <div class="quick-stat"><span class="quick-stat__value" id="dashUnique">0</span><span class="quick-stat__label">Unique ambassadors</span></div>
+              <div class="quick-stat"><span class="quick-stat__value" id="dashDaily">0</span><span class="quick-stat__label">Daily target</span></div>
+              <div class="quick-stat"><span class="quick-stat__value" id="dashPerReg">0</span><span class="quick-stat__label">Cost per registration</span></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel__head">
+            <div>
+              <h2>Leaderboard</h2>
+              <p>Top referrers by registrations.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="leaderboardTable">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Ambassador</th>
+                  <th>Channel</th>
+                  <th>Referral code</th>
+                  <th>Registrations</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" data-view="settings" id="view-settings" hidden>
+        <div class="view-grid">
+          <article class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>Data and export</h2>
+                <p>Manage tracker data in this browser.</p>
+              </div>
+            </div>
+            <div class="settings-actions">
+              <button class="btn btn--primary" id="exportCsv" type="button">Export CSV</button>
+              <button class="btn btn--secondary" id="sampleDataBtn" type="button">Load illustrative sample data</button>
+              <button class="btn btn--danger" id="resetDataBtn" type="button">Reset all tracker data</button>
+            </div>
+            <p class="form-msg" id="settingsMsg" role="status" aria-live="polite"></p>
+            <pre class="csv-preview" id="csvPreview"></pre>
+          </article>
+
+          <article class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>About this tracker</h2>
+                <p>Campaign details and data notes.</p>
+              </div>
+            </div>
+            <ul class="guidance-list">
+              <li>Target: 500 registrations.</li>
+              <li>Duration: 7 days.</li>
+              <li>Budget: ₹2,000, or about ₹4 per registration.</li>
+              <li>Sample data is illustrative and not a real campaign result.</li>
+              <li>Data is stored only in this browser.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Build Your First AI Project in 60 Minutes · NxtWave Growth Challenge Round 1</p>
+        <p class="muted">Sample and illustrative data only. Registration figures are targets, not achieved results.</p>
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
